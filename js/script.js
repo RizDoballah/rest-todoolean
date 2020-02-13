@@ -1,4 +1,28 @@
 $(document).ready(function() {
+  getTodos();
+
+  $('#button-add').click(function() {
+    var addElement = $('#input-add').val();
+    $.ajax(
+      {
+        url : 'http://157.230.17.132:3014/todos' ,
+        method : 'POST',
+        data : {
+          text : addElement
+        },
+        success: function (data) {
+          $('.list').html('');
+          getTodos();
+      
+        },
+        error : function (request, state, errors) {
+          console.log('Errore ' + errors);
+        }
+    });
+  });
+});
+
+function getTodos() {
   $.ajax(
     {
       url : 'http://157.230.17.132:3014/todos' ,
@@ -23,6 +47,4 @@ $(document).ready(function() {
       }
   });
 
-
-
-});
+}
