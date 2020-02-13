@@ -3,25 +3,20 @@ $(document).ready(function() {
 
   $('#button-add').click(function() {
     var addElement = $('#input-add').val();
-    $.ajax(
-      {
-        url : 'http://157.230.17.132:3014/todos' ,
-        method : 'POST',
-        data : {
-          text : addElement
-        },
-        success: function (data) {
-          $('.list').html('');
-          getTodos();
-      
-        },
-        error : function (request, state, errors) {
-          console.log('Errore ' + errors);
-        }
-    });
+    createTodo();
+
+  });
+  $(document).on('click', '#delete-button', function() {
+    var buttonDelete = $(this);
+    var idTodo = buttonDelete.parent().attr('data-id');
+    console.log(idTodo);
+    deleteTodo(idTodo);
+
   });
 });
 
+// Functions----------------
+//READ_CRUD
 function getTodos() {
   $.ajax(
     {
@@ -46,5 +41,45 @@ function getTodos() {
         console.log('Errore ' + errors);
       }
   });
+
+}
+
+//CREATE_CRUD
+function createTodo() {
+  $.ajax(
+    {
+      url : 'http://157.230.17.132:3014/todos' ,
+      method : 'POST',
+      data : {
+        text : addElement
+      },
+      success: function (data) {
+        $('.list').html('');
+        getTodos();
+
+      },
+      error : function (request, state, errors) {
+        console.log('Errore ' + errors);
+      }
+  });
+
+}
+
+//DELETE_CRUD
+function deleteTodo(id) {
+  $.ajax(
+    {
+      url : 'http://157.230.17.132:3014/todos/' + id ,
+      method : 'DELETE',
+      success: function (data) {
+        $('.list').html('');
+        getTodos();
+
+      },
+      error : function (request, state, errors) {
+        console.log('Errore ' + errors);
+      }
+  });
+
 
 }
