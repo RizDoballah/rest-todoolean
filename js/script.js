@@ -2,7 +2,8 @@ $(document).ready(function() {
   getTodos();
 
   $('#button-add').click(function() {
-    createTodo();
+    var addElement = $('#input-add').val();
+    createTodo(addElement);
 
   });
   $(document).on('click', '#delete-button', function() {
@@ -17,9 +18,9 @@ $(document).ready(function() {
     $('#modify').keypress(
       function(event) {
         var idTodo = $(this).parent().attr('data-id');
-        var query = $('#type').val();
+        var modifyElement = $('#modify').val();
         if (event.which == 13) {
-          updateTodo(idTodo);
+          updateTodo(idTodo, modifyElement);
         }
       });
   });
@@ -58,18 +59,17 @@ function getTodos() {
 }
 
 //CREATE_CRUD
-function createTodo() {
-  var addElement = $('#input-add').val();
+function createTodo(value) {
   $.ajax(
     {
       url : 'http://157.230.17.132:3014/todos' ,
       method : 'POST',
       data : {
-        text : addElement
+        text : value
       },
       success: function (data) {
         $('.list').html('');
-        $('#input-add').val('');
+        $('#input-add').val('')
         getTodos();
 
       },
@@ -80,14 +80,13 @@ function createTodo() {
 
 }
 //DELETE_CRUD
-function updateTodo(id) {
-  var modifyElement = $('#modify').val();
+function updateTodo(id, value) {
   $.ajax(
     {
       url : 'http://157.230.17.132:3014/todos/' + id ,
       method : 'PUT',
       data : {
-        text : modifyElement
+        text : value
       },
       success: function (data) {
         $('.list').html('');
